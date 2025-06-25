@@ -1,0 +1,18 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.productRoutes = void 0;
+const express_1 = __importDefault(require("express"));
+const product_controller_1 = require("../controller/product.controller");
+const cloudinary_1 = require("../ustils/cloudinary");
+const auth_1 = require("../midllewares/auth");
+const router = express_1.default.Router();
+router.post('/create-product', (0, auth_1.auth)('ADMIN'), product_controller_1.ProductController.createProduct);
+router.get('/get-all-products', product_controller_1.ProductController.getAllProducts);
+router.get('/get-product_details/:id', product_controller_1.ProductController.getProductById);
+router.get('/get-product_ByCategory', product_controller_1.ProductController.getProductByCategory);
+router.patch('/update-product/:id', cloudinary_1.upload.any(), product_controller_1.ProductController.updateProduct);
+router.delete('/delete-product/:id', product_controller_1.ProductController.deleteProduct);
+exports.productRoutes = router;

@@ -2,31 +2,22 @@ import express from 'express';
 import Stripe from 'stripe';
 import dotenv from 'dotenv';
 import AppError from '../errors/AppError';
-
 dotenv.config();
-
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error("❌ STRIPE_SECRET_KEY not defined in environment!");
 }
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2025-05-28.basil',
 });
-
 const router = express.Router();
-
 interface CartItem {
   productName: string;
   image: string;
   price: number;
   quantity: number;
 }
-
 router.post('/create-checkout-session', async (req, res) => {
-  const cartItems: CartItem[] = req.body.cartItems;
-
-  console.log("➡️ Received cartItems:", cartItems);
-
+  const {cartItems,shippingData} = req.body;
   if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
     throw new AppError(400, "No valid cart items provided.");
   }
@@ -49,11 +40,10 @@ router.post('/create-checkout-session', async (req, res) => {
       success_url: `http://localhost:5173/payment-success`,
       cancel_url: `http://localhost:5173/payment-cancel`,
       payment_intent_data: {
-        statement_descriptor: "WildTrail Gear Purchase",
+        statement_descriptor: "WildTrail Gear",
       },
     });
-
-    console.log("✅ Stripe session URL:", session.url);
+    console.log("SESSION=>", session)
     res.json({ url: session.url });
   } catch (err: any) {
     console.error("❌ Stripe Error:", err);

@@ -1,8 +1,8 @@
 
 import { Server } from "http";
 import mongoose from "mongoose";
-import { app } from "./app.ts";
 import dotenv from "dotenv";
+import { app } from "./app";
 dotenv.config()
 let server: Server
 async function main(){

@@ -51,8 +51,20 @@ const getProductByCategory:RequestHandler = catchAsync(async(req,res)=>{
 const updateProduct:RequestHandler = async(req,res,next)=>{
     const {id} = req.params;
     const data = req.body;
-    console.log(id, data)
     const result = await ProductService.updateProduct(id, data);
+    res.status(200).json({
+        status: true,
+        success: true,
+        statusCode: 200,
+        message: "Product updated successfully",
+        data: result
+    });
+}
+const decreaseProduct:RequestHandler = async(req,res,next)=>{
+    const {id} = req.params;
+    const{ quantity} = req.body;
+    console.log("quantyty",quantity)
+    const result = await ProductService.decreaseProduct(id, quantity);
     res.status(200).json({
         status: true,
         success: true,
@@ -77,5 +89,6 @@ export const ProductController = {
     getProductById,
     getProductByCategory,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    decreaseProduct
 };

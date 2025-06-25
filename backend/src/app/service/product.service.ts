@@ -19,7 +19,7 @@ const createProduct = async(data:Tproduct,  mainIndex:any)=>{
     const result = await product.save();
     return result;
 }
-  const getAllProducts =async ()=>{
+  const getAllProducts = async ()=>{
     const result = await Product.find();
     return result;
 }
@@ -64,6 +64,40 @@ const updateProduct = async(id:string, data:Tproduct)=>{
   }, {new:true});
   return updateProduct
 }
+const decreaseProduct = async (id: string, quantity: any) => {
+
+  const parsedQty = Number(quantity);
+  if (isNaN(parsedQty) || parsedQty <= 0) {
+    throw new AppError(400, "Invalid quantity");
+  }
+
+
+  const existProduct = await Product.findById(id);
+  if (!existProduct) {
+    throw new AppError(404, "Product not found");
+  }
+
+  const currentStock = Number(existProduct.stockQuantity);
+  if (isNaN(currentStock)) {
+    throw new AppError(500, "Current stock quantity is invalid");
+  }
+
+
+  const newStock = currentStock - parsedQty;
+  if (newStock < 0) {
+    throw new AppError(400, "Not enough stock available");
+  }
+
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    id,
+    { stockQuantity: newStock },
+    { new: true }
+  );
+
+  return updatedProduct;
+};
+
 const deleteProduct = async( id:string)=>{
   const existProduct = await Product.findById(id);
   if(!existProduct){
@@ -78,5 +112,6 @@ export const ProductService = {
     getProductById,
     getProductByCategory,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    decreaseProduct
 };

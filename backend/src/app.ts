@@ -9,8 +9,26 @@ import { categoryRoutes } from './app/routes/category.route';
 import { meRoute } from './app/me/me.route';
 import { adminRoute } from './app/admin/admin.route';
 import { StripePaymentrouter } from './app/payment/StripePayment';
+import { payment } from './app/payment/payment.route';
 export const app = express();
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://wildtrailgear.vercel.app", // ✅ Your Vercel frontend URL
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
@@ -21,6 +39,7 @@ app.use('/api/categories', categoryRoutes)
 app.use('/api/me', meRoute)
 app.use('/api/admin', adminRoute)
 app.use('/api/stripe', StripePaymentrouter)
+app.use('/api/order',payment)
 
 //global error handler
 app.use(globalErrorHandler);

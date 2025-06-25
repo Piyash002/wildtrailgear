@@ -9,6 +9,7 @@ router.get('/get-all-products', ProductController.getAllProducts);
 router.get('/get-product_details/:id', ProductController.getProductById);
 router.get('/get-product_ByCategory', ProductController.getProductByCategory);
 router.patch('/update-product/:id',upload.any(), ProductController.updateProduct);
+router.patch('/decrease-product/:id', ProductController.decreaseProduct);
 router.delete('/delete-product/:id', ProductController.deleteProduct);
 
 export const  productRoutes = router;
