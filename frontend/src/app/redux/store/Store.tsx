@@ -16,7 +16,7 @@ const authPersistConfig = {
 };
 
 const cartPersistConfig = {
-  key: 'cart',
+  key: 'carts',
   storage,
 };
 const rootReducer = combineReducers({

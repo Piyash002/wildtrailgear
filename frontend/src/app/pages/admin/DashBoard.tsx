@@ -3,13 +3,16 @@ import { TbCategoryPlus } from "react-icons/tb";
 import { FaProductHunt, FaSellsy } from "react-icons/fa6";
 import { useGetAllUserQuery } from "../../redux/features/auth/authApi/authApi";
 import { useGetCategoriesQuery } from "../../redux/features/category/categoryApi/categoryApi";
+import { useGetallProductQuery } from "../../redux/features/product/productAPi/productApi";
 const DashBoard = () => {
      const { data: user } = useGetAllUserQuery(null);
      const { data:category  } = useGetCategoriesQuery(undefined);
+     const { data:prodcuct  } = useGetallProductQuery(undefined);
         const userdata = user?.data ?? [];
          const lengthOfUser = userdata.length;
              const categorydata = category?.data ?? [];
              const lengthOfCategory = categorydata.length
+     
 
 
     return (
@@ -32,7 +35,7 @@ const DashBoard = () => {
             <div>
                 <div className="bg-gray-200 shadow-md hover:shadow-xl rounded-md border border-gray-300 w-full h-full p-4 mx-auto">
                 <FaProductHunt className="mx-auto text-3xl" />
-                <h1 className="mx-auto text-center font-body text-xl">Total Product: <span>10</span></h1>
+                <h1 className="mx-auto text-center font-body text-xl">Total Product: <span>{prodcuct?.data?.length}</span></h1>
                 </div>
             </div>
             <div>

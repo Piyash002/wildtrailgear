@@ -47,13 +47,13 @@ const AddProduct = () => {
   }
 };
     if(isLoading){
-        <h1 className="text-xl">Loading</h1>
+        <h1 className="text-xl mx-auto text-center">Loading....</h1>
     }
     return (
         <div>
-               <div  className=" justify-center items-center  backdrop:blur-sm bg-slate-200 rounded-lg shadow-lg mx-auto lg:w-96 w-11/12 my-auto lg:mt-10 mt-5  p-4 ">
+               <div  className=" justify-center items-center  backdrop:blur-sm bg-slate-200 rounded-lg shadow-lg mx-auto lg:w-96 w-11/12 my-auto lg:mt-10 mt-12  p-4 ">
          {/* logo */}
-            <div className=" h-12 w-16  mx-auto"><img src="/public/ChatGPT Image May 23, 2025, 08_34_29 AM.png" alt="Logo" />
+            <div className=" h-12 w-16  mx-auto"><img src="/ChatGPT Image May 23, 2025, 08_34_29 AM.png" alt="Logo" />
             </div>
             {/* title */}
             <div className="mx-auto text-center flex items-center justify-center gap-x-16 mt-4 mb-4">

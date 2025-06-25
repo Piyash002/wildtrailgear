@@ -41,6 +41,11 @@ const Navbar = () => {
             <NavLink to={'/categories'}>Category</NavLink>
         </li>
         <li className="font-brand hover:bg-slate-300 px-2 rounded mt-2 border-stone-300  border p-1 flex items-center gap-x-2">
+            <div><TbCategoryPlus className="mx-auto text-xl" /></div>
+            <NavLink to={'/order'}>Orders</NavLink>
+        </li>
+
+        <li className="font-brand hover:bg-slate-300 px-2 rounded mt-2 border-stone-300  border p-1 flex items-center gap-x-2">
             <div><MdAddShoppingCart className="mx-auto text-xl" /></div>
             <NavLink to={'/cart'}>Cart</NavLink>
         </li>
@@ -87,6 +92,9 @@ const Navbar = () => {
       </li>
     <li className="font-brand text-slate-800 hover:text-secondary hover:underline  rounded-xl p-2">
        <NavLink to={'/categories'}>Category</NavLink>
+      </li>
+    <li className="font-brand text-slate-800 hover:text-secondary hover:underline  rounded-xl p-2">
+       <NavLink to={'/order'}>Orders</NavLink>
       </li>
      <li className="font-brand text-slate-800 hover:text-secondary hover:underline  rounded-xl p-2">
        <NavLink to={'/about'}>About Us</NavLink>

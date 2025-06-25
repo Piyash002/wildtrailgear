@@ -22,6 +22,7 @@ import AboutUs from './../pages/Home/About Us/AboutUs';
 import Checkout from "../pages/chekout/Checkout";
 import PaymentCancel from "../pages/paymenCallback/PaymentFail";
 import PaymentSuccess from "../pages/paymenCallback/PaymentSuccess";
+import Orders from "../pages/orders/Orders";
 
 
 
@@ -77,6 +78,11 @@ export const router = createBrowserRouter([
     {
       path:'about',
       element:<AboutUs/>
+
+    },
+    {
+      path:'order',
+      element:<Orders/>
 
     },
     {

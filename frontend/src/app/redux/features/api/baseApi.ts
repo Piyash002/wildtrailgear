@@ -3,9 +3,9 @@ import { fetchBaseQuery, type FetchArgs, type BaseQueryFn, type FetchBaseQueryEr
 import type { RootState } from "../../store/Store";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { logoutUser, setUser } from "../auth/AuthSlice/AuthSlice";
-// Base Query
+const backendUrl = import.meta.env.VITE_API_URL;
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api",
+  baseUrl: `${backendUrl}/api`,
   credentials: "include",
 prepareHeaders: (headers, { getState }) => {
   const token = (getState() as RootState).auth.token;
@@ -25,7 +25,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   let result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 401) {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/refresh-token", {
+      const res = await fetch(`${backendUrl}/api/auth/refresh-token`, {
         method: "POST",
         credentials: "include",
       });

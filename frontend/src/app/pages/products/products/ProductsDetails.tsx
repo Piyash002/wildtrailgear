@@ -11,6 +11,8 @@ import type { TCartItem } from "../../../types/types";
 
 
 import { useState } from "react";
+import toast from "react-hot-toast";
+import ProductDetailsImage from "../../../component/user/ProductDetailsImage";
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,9 +48,21 @@ const ProductDetails = () => {
   });
 
   const handleBuyNow = () => {
-    dispatch(addToCart(cartItems));
-    navigate("/checkout"); // Update to your actual checkout route
+   const buynow = dispatch(addToCart(cartItems));
+   if(buynow.payload.stockQuantity>0){
+      toast.success("checkout the product")
+     }
+    navigate("/checkout");
   };
+  const handleCart = () => {
+     const cart = dispatch(addToCart(cartItems));
+     if(cart.payload.stockQuantity>0){
+      toast.success("product add to cart")
+     }
+   
+  };
+
+
 
   if (loadingProduct) return <div className="text-center p-4">Loading product...</div>;
   if (error) return <div className="text-center p-4 text-red-500">Error loading product</div>;
@@ -58,16 +72,20 @@ const ProductDetails = () => {
       {/* PRODUCT DISPLAY */}
       <div className="bg-gray-200 shadow-lg rounded-lg p-4 md:flex gap-6">
         {/* IMAGE SLIDER */}
-        <div className="md:w-1/2">
-      {
-        images.map((img:any,index:any)=>(
-          <div key={index} className="">
-            <img src={img.url} alt="sdf" className="w-32 h-44 flex text-center" />
-          </div>
-        ))
-      }
+        <div className="md:w-1/2 ">
+      <div className="w-full  text-center mb-2">
+        <img src={mainImage.url} alt="" className="mx-auto object-cover  h-56 w-56 "  />
         </div>
-
+      <div className=" flex mx-auto text-center  ">
+       {
+        images.map((img:any,index:any)=>(
+         <div  key={index} className="mx-auto"> 
+          <ProductDetailsImage key={index} img={img.url}  />
+         </div>
+        ))
+         }
+      </div>
+        </div>
         {/* DETAILS */}
         <div className="md:w-1/2 space-y-4">
           <h1 className="text-3xl font-bold text-neutral-800">{product?.productName}</h1>
@@ -109,18 +127,35 @@ const ProductDetails = () => {
           </div>
           {/* ACTION BUTTONS */}
           <div className="flex gap-4 mt-4">
-            <button
+           {
+            product?.stockQuantity === 0?<> <button disabled
               className="btn btn-outline border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-              onClick={() => dispatch(addToCart(cartItems))}
+              onClick={handleCart}
             >
               Add to Cart
-            </button>
-            <button
+            </button></>:<><button
+              className="btn btn-outline border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+              onClick={handleCart}
+            >
+              Add to Cart
+            </button></>
+           }
+           {
+            product?.stockQuantity === 0?<> <button
+            disabled
+              className="btn bg-green-600 text-white hover:bg-green-700"
+              onClick={handleBuyNow}
+            >
+              Buy Now
+            </button></>:<>
+             <button
               className="btn bg-green-600 text-white hover:bg-green-700"
               onClick={handleBuyNow}
             >
               Buy Now
             </button>
+            </>
+           }
           </div>
         </div>
       </div>

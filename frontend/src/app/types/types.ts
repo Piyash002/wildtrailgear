@@ -9,6 +9,16 @@ export interface Tuser {
   createdAt: Date;
   updatedAt: Date;
 }
+export interface TShippingAdress {
+  name: string;
+  email: string;
+  address: string;
+  zila:string;
+  upozila:string;
+  postcode:string;
+  phone: number;
+  paymentMethod: "stripe" | "cod";
+}
 
 export interface Tcategory {
   message: string;

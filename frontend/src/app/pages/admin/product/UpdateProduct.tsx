@@ -103,11 +103,11 @@ setIsModalOpen(false)
                      <div  className=" justify-center items-center  backdrop:blur-sm bg-slate-200 rounded-lg shadow-lg mx-auto lg:w-96 w-11/12 my-auto  lg:mt-24 mt-10 p-4 ">
                      <button className="text-mg p-2" onClick={handleModalClose}><IoIosClose/></button>
                           {/* logo */}
-                             <div className=" h-12 w-16  mx-auto"><img src="/public/ChatGPT Image May 23, 2025, 08_34_29 AM.png" alt="Logo" />
+                             <div className=" h-12 w-16  mx-auto"><img src="/ChatGPT Image May 23, 2025, 08_34_29 AM.png" alt="Logo" />
                              </div>
                              {/* title */}
                              <div className="mx-auto text-center flex items-center justify-center gap-x-16 mt-4 mb-4">
-                                <p className="lg:text-2xl text-xl font-body">Add product</p>
+                                <p className="lg:text-2xl text-xl font-body">Update product</p>
                              </div>
                              {/* form */}
                             <form   className="w-full px-4  gap-y-4" action="" onSubmit={handleSubmit(onSubmit)}>

@@ -17,4 +17,15 @@ module.exports = {
       },
   },
   plugins: [ require('daisyui')], // Add DaisyUI here],
+    daisyui: {
+    themes: ["light"], // you can also list your custom themes
+    darkTheme: "light",         // optional, sets the name of your dark theme
+    base: true,                // keep base styles
+    styled: true,              // enable DaisyUI styling
+    utils: true,               // enable utility classes
+    logs: false,               // disable console logs
+    rtl: false,                // right-to-left support
+    prefix: "",                // class prefix
+    defaultTheme: "light",     // ✅ Set your default theme here
+  },
 };
