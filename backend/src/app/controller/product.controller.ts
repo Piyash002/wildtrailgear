@@ -16,8 +16,11 @@ const createProduct:RequestHandler = async(req,res)=>{
         data: result
     });
 }
-const getAllProducts:RequestHandler = async(req,res,next)=>{
-    const result = await ProductService.getAllProducts();
+const getAllProducts:RequestHandler = catchAsync(async(req,res,next)=>{
+   const query = req.query;
+
+    const result = await ProductService.getAllProducts(query);
+
     res.status(200).json({
         status: true,
         success: true,
@@ -25,7 +28,20 @@ const getAllProducts:RequestHandler = async(req,res,next)=>{
         message: "Products fetched successfully",
         data: result
     });
-}
+})
+const soldPQuantity:RequestHandler = catchAsync(async(req,res,next)=>{
+   const query = req.query;
+
+    const result = await ProductService.soldPQuantity();
+
+    res.status(200).json({
+        status: true,
+        success: true,
+        statusCode: 200,
+        message: "Products fetched successfully",
+        data: result
+    });
+})
 const getProductById:RequestHandler = catchAsync(async(req,res)=>{
     const {id} = req.params 
     const result = await ProductService.getProductById(id);
@@ -73,6 +89,18 @@ const decreaseProduct:RequestHandler = async(req,res,next)=>{
         data: result
     });
 }
+const totalSell:RequestHandler = async(req,res,next)=>{
+    const {id} = req.params;
+    const{ quantity} = req.body;
+    const result = await ProductService.totalSell(id, quantity);
+    res.status(200).json({
+        status: true,
+        success: true,
+        statusCode: 200,
+        message: "Product updated successfully",
+        data: result
+    });
+}
 const deleteProduct:RequestHandler = async(req,res,next)=>{
     const {id} = req.params;
     await ProductService.deleteProduct(id);
@@ -90,5 +118,7 @@ export const ProductController = {
     getProductByCategory,
     updateProduct,
     deleteProduct,
-    decreaseProduct
+    decreaseProduct,
+    totalSell,
+    soldPQuantity
 };

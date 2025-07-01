@@ -6,9 +6,11 @@ const  router = express.Router()
 
 router.post('/create-product',auth('ADMIN'), ProductController.createProduct);
 router.get('/get-all-products', ProductController.getAllProducts);
+router.get('/get-soldPQuantity', ProductController.soldPQuantity);
 router.get('/get-product_details/:id', ProductController.getProductById);
 router.get('/get-product_ByCategory', ProductController.getProductByCategory);
 router.patch('/update-product/:id',upload.any(), ProductController.updateProduct);
+router.patch('/soldQuantity/:id', ProductController.totalSell);
 router.patch('/decrease-product/:id', ProductController.decreaseProduct);
 router.delete('/delete-product/:id', ProductController.deleteProduct);
 

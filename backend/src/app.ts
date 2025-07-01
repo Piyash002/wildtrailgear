@@ -10,11 +10,14 @@ import { meRoute } from './app/me/me.route';
 import { adminRoute } from './app/admin/admin.route';
 import { StripePaymentrouter } from './app/payment/StripePayment';
 import { payment } from './app/payment/payment.route';
+import { reviewRoute } from './app/routes/review';
+import { offerRoutes } from './app/routes/Offer.route';
+import { newsLater } from './app/routes/newslater.route';
 export const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://wildtrailgear.vercel.app", // ✅ Your Vercel frontend URL
+  "https://wildtrailgear.vercel.app", 
 ];
 
 app.use(
@@ -40,6 +43,9 @@ app.use('/api/me', meRoute)
 app.use('/api/admin', adminRoute)
 app.use('/api/stripe', StripePaymentrouter)
 app.use('/api/order',payment)
+app.use('/api/review',reviewRoute)
+app.use('/api/offers', offerRoutes);
+app.use('/api/newsletter',newsLater);
 
 //global error handler
 app.use(globalErrorHandler);

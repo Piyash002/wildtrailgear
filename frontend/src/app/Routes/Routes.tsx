@@ -1,7 +1,6 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
 import App from "../../App";
 import Home from "../pages/Home/Home/Home";
-import Cart from "../pages/cart/cart";
 import Products from "../pages/products/products/Products";
 import Login from '../pages/shared/login/Login';
 import Registration from "../pages/shared/refistration/Registration";
@@ -22,7 +21,9 @@ import AboutUs from './../pages/Home/About Us/AboutUs';
 import Checkout from "../pages/chekout/Checkout";
 import PaymentCancel from "../pages/paymenCallback/PaymentFail";
 import PaymentSuccess from "../pages/paymenCallback/PaymentSuccess";
-import Orders from "../pages/orders/Orders";
+
+import { UserProfile } from "../component/user/UserProfile";
+import CartPage from "../pages/CartPage/CartPage";
 
 
 
@@ -45,11 +46,11 @@ export const router = createBrowserRouter([
       element:<ProductDetails/>
 
     },
-    {
-      path:'getProductsByCategory/:categoryName',
-      element:<ProductsByCategory/>
+    // {
+    //   path:'getProductsByCategory/:categoryName',
+    //   element:<ProductsByCategory/>
 
-    },
+    // },
     {
       path:'categories',
       element:<Categories/>
@@ -57,7 +58,7 @@ export const router = createBrowserRouter([
     },
     {
       path:'cart',
-      element:<Cart/>
+      element:<CartPage/>
 
     },
     {
@@ -82,7 +83,7 @@ export const router = createBrowserRouter([
     },
     {
       path:'order',
-      element:<Orders/>
+      element:<UserProfile/>
 
     },
     {

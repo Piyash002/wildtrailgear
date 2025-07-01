@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../api/baseApi";
 
 const  productApi = baseApi.injectEndpoints({
@@ -7,6 +8,14 @@ const  productApi = baseApi.injectEndpoints({
                 url:"/products/create-product",
                 method:"POST",
                 body: productPayload
+        }),
+        invalidatesTags:["Products"]
+     }),
+     submitReview : builder.mutation({
+        query:({productId, reviewData})=>({
+                url:`/review/add-review/${productId}`,
+                method:"POST",
+                body:reviewData
         }),
         invalidatesTags:["Products"]
      }),
@@ -26,6 +35,14 @@ const  productApi = baseApi.injectEndpoints({
         }),
         invalidatesTags:["Products"]
      }), 
+     soldProduct : builder.mutation({
+        query:({quantity, id})=>({
+                url:`/products/soldQuantity/${id}`,
+                method:"PATCH",
+                body: {quantity}
+        }),
+        invalidatesTags:["Products"]
+     }), 
      deleteProduct : builder.mutation({
         query:({id})=>({
                 url:`/products/delete-product/${id}`,
@@ -34,15 +51,20 @@ const  productApi = baseApi.injectEndpoints({
         invalidatesTags:["Products"]
      }), 
      getallProduct : builder.query({
-        query:()=>({
-                url:"/products/get-all-products",
-                method:"GET",
-        }),
-        providesTags:["Products"]
+        query: (params) => {
+    const queryString = params ? `?${new URLSearchParams(params as any).toString()}` : "";
+    return {
+      url: `/products/get-all-products${queryString}`,
+      method: "GET",
+   
+    };
+  },
+  providesTags: ["Products"],
      }),
      getProductDteails : builder.query({
         query:(id)=>({
                 url:`/products/get-product_details/${id}`,
+                 transformResponse: (response:any) => response.data,
                 method:"GET",
         }),
         providesTags:["Products"]
@@ -54,6 +76,13 @@ const  productApi = baseApi.injectEndpoints({
         }),
         providesTags:["Products"]
      }),
+     getSoldProduct : builder.query({
+        query:()=>({
+                url:`/products/get-soldPQuantity`,
+                method:"GET",
+        }),
+        providesTags:["Products"]
+     }),
     })
 })
- export  const {useAddProductMutation, useGetallProductQuery, useGetProductDteailsQuery, useGetProductByCategoryQuery, useUpdateProductMutation, useDeleteProductMutation, useDecreaseProductMutation} = productApi
+ export  const {useAddProductMutation, useGetallProductQuery, useGetProductDteailsQuery, useGetProductByCategoryQuery, useUpdateProductMutation, useDeleteProductMutation, useDecreaseProductMutation, useSubmitReviewMutation ,useSoldProductMutation, useGetSoldProductQuery} = productApi

@@ -12,7 +12,7 @@ const Header = () => {
             <NavLink to={'/'}>
            <div className="flex justify-center items-center my-2 ">
             <img className="w-8 "  src="/ChatGPT Image May 23, 2025, 08_34_29 AM.png" alt="" />
-            <h1 className="text-primary lg:text-lg sm:text-base   font-brand" >WildTrail Gear</h1>
+            <h1 className="text-white lg:text-lg sm:text-base   font-body" >WildTrail Gear</h1>
            </div> 
           </NavLink>
           </div>
@@ -24,10 +24,10 @@ const Header = () => {
             </div>
            </NavLink>
      {
-      user? <UserDropDwon/>:<NavLink className=" btn btn-outline  rounded  text-secondary hover:bg-primary  flex justify-center items-center lg:px-3 px-2 py-2 gap-x-1 lg:text-md text-base " to={"/login"}>Login <FiLogIn /></NavLink>
+      user? <UserDropDwon/>:<NavLink className=" btn btn-outline  rounded  text-white hover:bg-primary  flex justify-center items-center lg:px-3 px-2 py-2 gap-x-1 lg:text-md text-base " to={"/login"}>Login <FiLogIn /></NavLink>
      }
           </div>
-        </div>
+        </div> 
     );
 };
 export default Header;

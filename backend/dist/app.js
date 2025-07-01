@@ -15,10 +15,14 @@ const category_route_1 = require("./app/routes/category.route");
 const me_route_1 = require("./app/me/me.route");
 const admin_route_1 = require("./app/admin/admin.route");
 const StripePayment_1 = require("./app/payment/StripePayment");
+const payment_route_1 = require("./app/payment/payment.route");
+const review_1 = require("./app/routes/review");
+const Offer_route_1 = require("./app/routes/Offer.route");
+const newslater_route_1 = require("./app/routes/newslater.route");
 exports.app = (0, express_1.default)();
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://wildtrailgear.vercel.app", // ✅ Your Vercel frontend URL
+    "https://wildtrailgear.vercel.app",
 ];
 exports.app.use((0, cors_1.default)({
     origin: function (origin, callback) {
@@ -41,6 +45,10 @@ exports.app.use('/api/categories', category_route_1.categoryRoutes);
 exports.app.use('/api/me', me_route_1.meRoute);
 exports.app.use('/api/admin', admin_route_1.adminRoute);
 exports.app.use('/api/stripe', StripePayment_1.StripePaymentrouter);
+exports.app.use('/api/order', payment_route_1.payment);
+exports.app.use('/api/review', review_1.reviewRoute);
+exports.app.use('/api/offers', Offer_route_1.offerRoutes);
+exports.app.use('/api/newsletter', newslater_route_1.newsLater);
 //global error handler
 exports.app.use(globalErrorHandler_1.default);
 // Mount routes here

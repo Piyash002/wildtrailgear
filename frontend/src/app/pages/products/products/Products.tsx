@@ -1,35 +1,59 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
+import ProductsCard from "../../../component/user/ProductsCard";
+import SearchProduct from "../../../component/user/SearchProduct";
+import Sidebar from "../../../component/user/Sidebar";
 import { useGetallProductQuery } from "../../../redux/features/product/productAPi/productApi";
-
+import SmalSidebar from "../../../component/user/SmalSidebar";
+import Pagination from './../../../component/user/Pagination';
 const Products = () => {
-  const { data: response, isLoading } = useGetallProductQuery(null);
-  const products = response?.data ?? [];
-
+   const [queryParams, setQueryParams] = useState({
+    search: "",
+    category: "",
+    price: "",
+    ratings: "",
+    producatName:'',
+    page: "1",     
+    limit: "10", 
+  });
+    const handleFilters = (filters: { category?: string; price?: string; ratings?: string }) => {
+    setQueryParams((prev) => ({ ...prev, ...filters }));
+  };
+  const handleSearch = (value: string) => {
+    setQueryParams((prev) => ({ ...prev, search: value }));
+  };
+ const handlePageChange = (newPage: number) => {
+  setQueryParams((prev) => ({ ...prev, page: newPage.toString() }));
+};
+  const { data: response, isLoading } = useGetallProductQuery(queryParams);
+  const products = response?.data?.result??[]
+  const totalPage = response?.data?.totalPage || 1;
+  const currentPage = parseInt(queryParams.page);
   if (isLoading) return <p>Loading...</p>;
   return (
-    <div className="grid grid-cols-2 md:grid-cols-6 gap-2 p-4  ">
-      {products.map((product: any) => {
-        const mainImage = product.images.find((img: any) => img.isMain);
-
-        return (
-          <div key={product._id} className="border p-2 rounded shadow-md  hover:shadow-slate-400">
-            <img
-              src={mainImage?.url || "/default.jpg"}
-              alt={product.productName}
-              className="h-40 w-full object-cover rounded"
-            />
-            <h2 className="text-lg font-semibold mt-2">{product.productName}</h2>
-            <p className="text-green-600 font-body ">৳ 
-                     {product.price}</p>
-            <a
-              href={`/products/${product._id}`}
-              className="text-blue-500 hover:underline"
-            >
-              View Details
-            </a>
-          </div>
-        );
-      })}
+    <div className="">
+      {/* search and small sidebar */}
+        <div className="mt-2  mx-auto w-full">
+            <SearchProduct onSearch= {handleSearch} />
+               <div className="lg:hidden block   col-span-1 ">
+          <div className="px-4 -mb-3 mt-2">
+          <SmalSidebar onFilterChange={handleFilters} />
+        </div>
+        </div>
+        </div>
+        {/* sideabr and product card */}
+        <div className=" grid lg:grid-cols-5 grid-cols-4  gap-x-4 lg:p-6">
+      <div className="col-span-1">
+        <Sidebar onFilterChange={handleFilters}/>
+        </div>
+        <div className="col-span-4 p-4 ">
+      <ProductsCard products={products}/>
+      </div>
+        </div>
+        {/* pagination */}
+       <div className="mx-auto text-center">
+        <Pagination currentPage={currentPage} 
+        onPageChange={handlePageChange} totalPage={totalPage}/>
+      </div>
     </div>
   );
 };

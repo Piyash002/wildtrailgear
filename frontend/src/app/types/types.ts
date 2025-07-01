@@ -29,6 +29,9 @@ export interface Tcategory {
 };
 
 export interface Tproduct {
+  soldCount: number;
+  reviews: string;
+  avarageratings: number;
   _id:string;
   productName: string;
   price: number;

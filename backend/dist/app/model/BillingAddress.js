@@ -23,48 +23,32 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BillingAdress = void 0;
+exports.BillingAddress = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-const BillingAdressSchema = new mongoose_1.Schema({
-    name: {
+const BillingAddressSchema = new mongoose_1.Schema({
+    name: { type: String, trim: true, required: true },
+    email: { type: String, trim: true, required: true },
+    phone: { type: String, trim: true, required: true },
+    address: { type: String, trim: true, required: true },
+    zila: { type: String, trim: true, required: true },
+    upozila: { type: String, trim: true, required: true },
+    postcode: { type: String, trim: true, },
+    cartItems: [
+        {
+            productId: { type: mongoose_1.default.Schema.Types.ObjectId, required: true, ref: "Product" },
+            productName: { type: String, required: true },
+            quantity: { type: Number, required: true },
+            price: { type: Number, required: true },
+        },
+    ],
+    paymentMethod: { type: String, required: true },
+    status: {
         type: String,
-        trim: true,
-        required: true,
+        enum: ["pending", "paid", "cancelled", "delivered"],
+        default: "pending",
     },
-    email: {
-        type: String,
-        trim: true,
-        required: true,
-    },
-    phone: {
-        type: String,
-        trim: true,
-        required: true,
-    },
-    address: {
-        type: String,
-        trim: true,
-        required: true,
-    },
-    zila: {
-        type: String,
-        trim: true,
-        required: true,
-    },
-    upozila: {
-        type: String,
-        trim: true,
-        required: true,
-    },
-    postcode: {
-        type: String,
-        trim: true,
-        required: true,
-    },
-    productId: {
-        type: [String],
-        trim: true,
-    }
+    isPaid: { type: Boolean, default: false },
+    paymentIntentId: { type: String, default: "" },
 });
-exports.BillingAdress = mongoose_1.default.models.Product ||
-    mongoose_1.default.model("Product", BillingAdressSchema);
+exports.BillingAddress = mongoose_1.default.models.BillingAddress ||
+    mongoose_1.default.model("BillingAddress", BillingAddressSchema);

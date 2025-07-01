@@ -3,12 +3,13 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../redux/Hooks";
 import type { TShippingAdress } from "../../types/types";
 import { clearCart } from "../../redux/features/product/productSlice/productSlice";
-import { useDecreaseProductMutation } from "../../redux/features/product/productAPi/productApi";
+import { useSoldProductMutation } from "../../redux/features/product/productAPi/productApi";
 import toast from "react-hot-toast";
 
 const Checkout = () => {
     const dispatch = useAppDispatch();
-    const [decreaseProduct] = useDecreaseProductMutation()
+    // const [decreaseProduct] = useDecreaseProductMutation()
+    const [ soldQuantity] = useSoldProductMutation()
       const {register, handleSubmit} = useForm<TShippingAdress>();
         const cartItems = useAppSelector((state) => state.cart.items);
         const backendUrl = import.meta.env.VITE_API_URL;
@@ -31,7 +32,7 @@ const Checkout = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({formData,cartItems}),
         });
-        const data = await res.json();
+        const data = await res.json()
         if (data?.url) {
           window.location.href = data.url;
         }
@@ -46,9 +47,9 @@ const Checkout = () => {
         if (data?.success) {
         toast.success('order place sucessfully')
          for (const item of cartItems) {
-          console.log("Sending quantity:", item.quantity, "of type", typeof item.quantity);
     try {
-      await decreaseProduct({ id: item._id, quantity: item.quantity }).unwrap();
+      // await decreaseProduct({ id: item._id, quantity: item.quantity }).unwrap();
+      await soldQuantity({ id: item._id, quantity: item.quantity }).unwrap()
     } catch (error) {
       console.error("Stock decrease failed:", error);
     }

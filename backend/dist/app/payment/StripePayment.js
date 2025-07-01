@@ -17,7 +17,7 @@ const stripe = new stripe_1.default(process.env.STRIPE_SECRET_KEY, {
 });
 const router = express_1.default.Router();
 router.post('/create-checkout-session', async (req, res) => {
-    const cartItems = req.body.cartItems;
+    const { cartItems, shippingData } = req.body;
     if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
         throw new AppError_1.default(400, "No valid cart items provided.");
     }
@@ -36,12 +36,13 @@ router.post('/create-checkout-session', async (req, res) => {
                 },
                 quantity: item.quantity,
             })),
-            success_url: `http://localhost:5173/payment-success`,
-            cancel_url: `http://localhost:5173/payment-cancel`,
+            success_url: `https://wildtrailgear.vercel.app/payment-success`,
+            cancel_url: `https://wildtrailgear.vercel.app/payment-cancel`,
             payment_intent_data: {
                 statement_descriptor: "WildTrail Gear",
             },
         });
+        console.log("SESSION=>", session);
         res.json({ url: session.url });
     }
     catch (err) {

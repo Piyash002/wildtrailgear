@@ -29,6 +29,24 @@ const imageSchema = new mongoose_1.Schema({
     url: { type: String, required: true },
     isMain: { type: Boolean, default: false },
 }, { _id: false });
+const reviewsSchema = new mongoose_1.default.Schema({
+    user: {
+        type: mongoose_1.default.Schema.ObjectId,
+        ref: "User",
+    },
+    rating: {
+        type: Number,
+        min: 1,
+        max: 5,
+    },
+    comment: {
+        type: String,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+});
 const productSchema = new mongoose_1.Schema({
     productName: {
         type: String,
@@ -52,9 +70,20 @@ const productSchema = new mongoose_1.Schema({
         required: true,
         trim: true,
     },
-    ratings: {
+    avarageratings: {
         type: Number,
         default: 0,
+    },
+    numberOfRevies: {
+        type: Number,
+        default: 0,
+    },
+    soldCount: {
+        type: Number,
+        default: 0,
+    },
+    reviews: {
+        type: [reviewsSchema],
     },
     images: {
         type: [imageSchema],

@@ -37,8 +37,8 @@ router.post('/create-checkout-session', async (req, res) => {
         },
         quantity: item.quantity,
       })),
-      success_url: `http://localhost:5173/payment-success`,
-      cancel_url: `http://localhost:5173/payment-cancel`,
+      success_url: `https://wildtrailgear.vercel.app/payment-success`,
+      cancel_url: `https://wildtrailgear.vercel.app/payment-cancel`,
       payment_intent_data: {
         statement_descriptor: "WildTrail Gear",
       },

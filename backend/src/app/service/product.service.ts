@@ -19,10 +19,72 @@ const createProduct = async(data:Tproduct,  mainIndex:any)=>{
     const result = await product.save();
     return result;
 }
-  const getAllProducts = async ()=>{
-    const result = await Product.find();
-    return result;
-}
+const getAllProducts = async (query: Record<string, unknown>) => {
+  const category = typeof query?.category === "string" ? query.category : '';
+  const price = typeof query?.price === "string" ? query.price : '';
+  const ratings = typeof query?.ratings === "string" ? query.ratings : '';
+  const search = typeof query?.search === "string" ? query.search : '';
+  const page = typeof query?.page === "string" ? query.page : "1";
+  const limit = typeof query?.limit === "string" ? query.limit : "10";
+
+  const pageInt = parseInt(page);
+  const limitInt = parseInt(limit);
+  const skip = (pageInt - 1) * limitInt;
+
+  let filters:any = {};
+// category filter
+  if (category) {
+    filters = {category:category}
+  }
+
+// rating filter
+  if (ratings) {
+    filters =({ ratings: { $gte: Number(ratings) } });
+  }
+
+// price filter
+  if (price && price.includes("-")) {
+    console.log(price)
+    const [min, max] = price.split("-").map(Number);
+    console.log(min, max)
+    filters = ({ price: { $gte: min, $lte: max } });
+  }
+
+// search filter
+  if (search.trim() !== "") {
+    const regEx = new RegExp(search, "i");
+    filters = ({
+      $or: [
+        { productName: regEx },
+        { brand: regEx },
+        { category: regEx },
+        { description: regEx },
+      ],
+    });
+  }
+
+  const total = await Product.countDocuments(filters);
+  const result = await Product.find(filters)
+      .sort({ _id: -1 })
+      .skip(skip )
+      .limit(limitInt);
+  const totalPage = Math.ceil(total / limitInt);
+
+  return {
+    result,
+    totalPage,
+    total,
+    limit: limitInt,
+    page: pageInt,
+  };
+};
+const soldPQuantity = async () => {
+  const bestSellers = await Product.find()
+  .sort({ soldCount: -1 })
+  .limit(10);
+  return bestSellers
+
+};
 const  getProductById = async(id:string)=>{
 const existProduct  = await Product.findById(id);
 if(!existProduct){
@@ -97,6 +159,36 @@ const decreaseProduct = async (id: string, quantity: any) => {
 
   return updatedProduct;
 };
+const totalSell = async (id: string, quantity: any) => {
+  const parsedQty = Number(quantity);
+  if (isNaN(parsedQty) || parsedQty <= 0) {
+    throw new AppError(400, "Invalid quantity");
+  }
+
+  const existProduct = await Product.findById(id);
+  if (!existProduct) {
+    throw new AppError(404, "Product not found");
+  }
+
+  // Optionally check stock before updating
+  if (existProduct.stockQuantity < parsedQty) {
+    throw new AppError(400, "Not enough stock");
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    id,
+    {
+      $inc: {
+        soldCount: parsedQty, // ✅ Only increment by new quantity
+        stockQuantity: -parsedQty      // ✅ Optional: reduce available stock
+      }
+    },
+    { new: true }
+  );
+
+  return updatedProduct;
+};
+
 
 const deleteProduct = async( id:string)=>{
   const existProduct = await Product.findById(id);
@@ -113,5 +205,7 @@ export const ProductService = {
     getProductByCategory,
     updateProduct,
     deleteProduct,
-    decreaseProduct
+    decreaseProduct,
+    totalSell,
+    soldPQuantity,
 };

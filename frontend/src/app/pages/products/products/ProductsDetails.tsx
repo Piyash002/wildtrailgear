@@ -7,12 +7,11 @@ import {
 } from "../../../redux/features/product/productAPi/productApi";
 import { addToCart } from "../../../redux/features/product/productSlice/productSlice";
 import type { TCartItem } from "../../../types/types";
-
-
-
 import { useState } from "react";
 import toast from "react-hot-toast";
 import ProductDetailsImage from "../../../component/user/ProductDetailsImage";
+import ProductReviews from "../../../component/user/ReviewForm";
+
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -73,16 +72,13 @@ const ProductDetails = () => {
       <div className="bg-gray-200 shadow-lg rounded-lg p-4 md:flex gap-6">
         {/* IMAGE SLIDER */}
         <div className="md:w-1/2 ">
-      <div className="w-full  text-center mb-2">
-        <img src={mainImage.url} alt="" className="mx-auto object-cover  h-56 w-56 "  />
-        </div>
       <div className=" flex mx-auto text-center  ">
        {
-        images.map((img:any,index:any)=>(
-         <div  key={index} className="mx-auto"> 
-          <ProductDetailsImage key={index} img={img.url}  />
+        
+         <div   className="mx-auto"> 
+          <ProductDetailsImage  images={images}  />
          </div>
-        ))
+  
          }
       </div>
         </div>
@@ -119,11 +115,11 @@ const ProductDetails = () => {
           {/* Dynamic Rating */}
           <div className="flex items-center gap-1">
             {Array.from({ length: 5 }).map((_, i) => (
-              <span key={i} className={`text-xl ${i < product?.ratings ? "text-yellow-400" : "text-gray-300"}`}>
+              <span key={i} className={`text-xl ${i < product?.avarageratings ? "text-yellow-400" : "text-gray-300"}`}>
                 ★
               </span>
             ))}
-            <span className="text-sm text-gray-500 ml-2">({product?.ratings || 0})</span>
+            <span className="text-sm text-gray-500 ml-2">({product?.avarageratings || 0})</span>
           </div>
           {/* ACTION BUTTONS */}
           <div className="flex gap-4 mt-4">
@@ -191,6 +187,10 @@ const ProductDetails = () => {
           ))}
         </div>
       )}
+
+      <div>
+        < ProductReviews productId={id}/>
+      </div>
     </div>
   );
 };

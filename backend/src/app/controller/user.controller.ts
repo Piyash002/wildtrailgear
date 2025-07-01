@@ -40,17 +40,19 @@ const loginUser:RequestHandler = async(req,res,next)=>{
     next(error)
    }
 };
-const refreshToken = catchAsync(async(req,res)=>{
-     const  { refreshToken} = req.cookies;
-     console.log(refreshToken)
-     const result = await UserService.refreshToken(refreshToken);
-     res.status(200).json({
-        success:true,
-        statusCode:200,
-        message:"access token retrive successfully",
-        data:{accessToken: result.accessToken,} // 
-    })
-})
+const refreshToken = catchAsync(async (req, res) => {
+  const token = req.cookies?.refreshToken;
+  if (!token) {
+    res.status(401).json({ message: "No refresh token" });
+    return;
+  }
+  const result = await UserService.refreshToken(token);
+  res.status(200).json({
+    success: true,
+    message: "Access token retrieved",
+    data: { accessToken: result.accessToken },
+  });
+});
 export const UserController = {
     registerUSer,
     loginUser,
